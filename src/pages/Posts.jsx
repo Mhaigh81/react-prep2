@@ -7,7 +7,7 @@ function Posts() {
     
     useEffect(() => {
         async function fetchPosts() {
-            const { data } = await axios.get("https://jsonplaceholder.typicode.com/posts?userID=1")   
+            const { data } = await axios.get("https://jsonplaceholder.typicode.com/posts?userid=1")   
             console.log(data)   
         }
         fetchPosts()    
