@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { Link, useParams, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
 const Posts = () => {
+    let navigate = useNavigate()
     const { id } = useParams();
     const [posts, setPosts] = useState([])
-    const [loading, setLoading] = useState(true)
+    const [loading, setLoading] = useState()
     const [searchId, setSearchId] = useState(id)
     
     function onSearch() {
@@ -13,6 +14,7 @@ const Posts = () => {
     }
     
     async function fetchPosts(userId) {
+        setLoading(true)
         const { data } = await axios.get(
             `https://jsonplaceholder.typicode.com/posts?userId=${userId || id}`
         )   
@@ -27,20 +29,22 @@ const Posts = () => {
         return (
           <>
             <div className="post__search">
-              <button>← Back</button>
-              <div className="post__search--container">
-                <label className="post__search--label">Search by Id</label>
-                <input
-                  type="number"
-                  value={searchId}
-                  onChange={(event) => setSearchId(event.target.value)}
-                  onKeyPress={(event) => {
-                    if (event.key === "Enter") {
-                      onSearch();
-                    }
-                  }}
-                />
-                <button onClick={() => onSearch()}>Enter</button>
+                
+                <button onClick={() => navigate('/')}>← Back</button>
+                
+                <div className="post__search--container">
+                    <label className="post__search--label">Search by Id</label>
+                    <input
+                    type="number"
+                    value={searchId}
+                    onChange={(event) => setSearchId(event.target.value)}
+                    onKeyDown={(event) => {
+                        if (event.key === "Enter") {
+                        onSearch();
+                        }
+                    }}
+                    />
+                    <button onClick={() => onSearch()}>Enter</button>
               </div>
             </div>
             {loading
